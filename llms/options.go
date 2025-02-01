@@ -12,7 +12,7 @@ type CallOptions struct {
 	Model string `json:"model"`
 	// CandidateCount is the number of response candidates to generate.
 	CandidateCount int `json:"candidate_count"`
-	// MaxTokens is the maximum number of tokens to generate.
+	//Deprecated MaxTokens is the maximum number of tokens to generate.
 	MaxTokens int `json:"max_tokens"`
 	// Temperature is the temperature for sampling, between 0 and 1.
 	Temperature float64 `json:"temperature"`
@@ -61,6 +61,9 @@ type CallOptions struct {
 	// Metadata is a map of metadata to include in the request.
 	// The meaning of this field is specific to the backend in use.
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
+
+	ReasoningEffort     ReasoningEffort `json:"reasoning_effort,omitempty"`
+	MaxCompletionTokens int             `json:"max_completion_tokens,omitempty"`
 }
 
 // Tool is a tool that can be used by the model.
@@ -97,12 +100,17 @@ type FunctionReference struct {
 
 // FunctionCallBehavior is the behavior to use when calling functions.
 type FunctionCallBehavior string
+type ReasoningEffort string
 
 const (
 	// FunctionCallBehaviorNone will not call any functions.
 	FunctionCallBehaviorNone FunctionCallBehavior = "none"
 	// FunctionCallBehaviorAuto will call functions automatically.
 	FunctionCallBehaviorAuto FunctionCallBehavior = "auto"
+
+	ReasoningEffortLow    ReasoningEffort = "low"
+	ReasoningEffortMedium ReasoningEffort = "medium"
+	ReasoningEffortHigh   ReasoningEffort = "high"
 )
 
 // WithModel specifies which model name to use.
@@ -263,5 +271,19 @@ func WithJSONMode() CallOption {
 func WithMetadata(metadata map[string]interface{}) CallOption {
 	return func(o *CallOptions) {
 		o.Metadata = metadata
+	}
+}
+
+// WithReasoningEffort will add an option to set the reasoning effort.
+func WithReasoningEffort(effort ReasoningEffort) CallOption {
+	return func(o *CallOptions) {
+		o.ReasoningEffort = effort
+	}
+}
+
+// WithMaxCompletionTokens will add an option to set the maximum number of completion tokens.
+func WithMaxCompletionTokens(tokens int) CallOption {
+	return func(o *CallOptions) {
+		o.MaxCompletionTokens = tokens
 	}
 }
