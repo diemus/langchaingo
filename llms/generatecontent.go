@@ -61,6 +61,16 @@ func (tc TextContent) String() string {
 
 func (TextContent) isPart() {}
 
+type ThinkingContent struct {
+	Thinking string
+}
+
+func (tc ThinkingContent) String() string {
+	return tc.Thinking
+}
+
+func (ThinkingContent) isPart() {}
+
 // ImageURLContent is content with an URL pointing to an image.
 type ImageURLContent struct {
 	URL    string `json:"url"`
@@ -143,6 +153,9 @@ type ContentChoice struct {
 
 	// ToolCalls is a list of tool calls the model asks to invoke.
 	ToolCalls []ToolCall
+
+	// 推理思考的部分
+	Thinking string
 }
 
 // TextParts is a helper function to create a MessageContent with a role and a
