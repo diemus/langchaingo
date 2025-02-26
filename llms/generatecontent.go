@@ -63,6 +63,7 @@ func (TextContent) isPart() {}
 
 type ThinkingContent struct {
 	Thinking string
+	Metadata map[string]string
 }
 
 func (tc ThinkingContent) String() string {
@@ -155,7 +156,7 @@ type ContentChoice struct {
 	ToolCalls []ToolCall
 
 	// 推理思考的部分
-	Thinking string
+	Thinking ThinkingContent
 }
 
 // TextParts is a helper function to create a MessageContent with a role and a
@@ -181,6 +182,8 @@ func ShowMessageContents(w io.Writer, msgs []MessageContent) {
 			switch pp := p.(type) {
 			case TextContent:
 				fmt.Fprintf(w, "TextContent %q\n", pp.Text)
+			case ThinkingContent:
+				fmt.Fprintf(w, "ThinkingContent %q\n", pp.Thinking)
 			case ImageURLContent:
 				fmt.Fprintf(w, "ImageURLPart %q\n", pp.URL)
 			case BinaryContent:
