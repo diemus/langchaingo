@@ -62,8 +62,10 @@ type CallOptions struct {
 	// The meaning of this field is specific to the backend in use.
 	Metadata map[string]interface{} `json:"metadata,omitempty"`
 
-	ReasoningEffort     ReasoningEffort `json:"reasoning_effort,omitempty"`
-	MaxCompletionTokens int             `json:"max_completion_tokens,omitempty"`
+	ReasoningEffort     ReasoningEffort  `json:"reasoning_effort,omitempty"`
+	ReasoningSummary    ReasoningSummary `json:"reasoning_summary,omitempty"`
+	MaxCompletionTokens int              `json:"max_completion_tokens,omitempty"`
+	ResponseAPI         bool             `json:"response_api,omitempty"`
 }
 
 // Tool is a tool that can be used by the model.
@@ -101,6 +103,7 @@ type FunctionReference struct {
 // FunctionCallBehavior is the behavior to use when calling functions.
 type FunctionCallBehavior string
 type ReasoningEffort string
+type ReasoningSummary string
 
 const (
 	// FunctionCallBehaviorNone will not call any functions.
@@ -111,6 +114,10 @@ const (
 	ReasoningEffortLow    ReasoningEffort = "low"
 	ReasoningEffortMedium ReasoningEffort = "medium"
 	ReasoningEffortHigh   ReasoningEffort = "high"
+
+	ReasoningSummaryAuto     ReasoningSummary = "auto"
+	ReasoningSummaryConcise  ReasoningSummary = "concise"
+	ReasoningSummaryDetailed ReasoningSummary = "detailed"
 )
 
 // WithModel specifies which model name to use.
@@ -281,9 +288,21 @@ func WithReasoningEffort(effort ReasoningEffort) CallOption {
 	}
 }
 
+func WithReasoningSummary(summary ReasoningSummary) CallOption {
+	return func(o *CallOptions) {
+		o.ReasoningSummary = summary
+	}
+}
+
 // WithMaxCompletionTokens will add an option to set the maximum number of completion tokens.
 func WithMaxCompletionTokens(tokens int) CallOption {
 	return func(o *CallOptions) {
 		o.MaxCompletionTokens = tokens
+	}
+}
+
+func WithResponseAPI() CallOption {
+	return func(o *CallOptions) {
+		o.ResponseAPI = true
 	}
 }
