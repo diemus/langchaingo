@@ -146,6 +146,18 @@ type ContentResponse struct {
 	GenerationInfo map[string]any
 }
 
+func (i ContentResponse) GetTextContent() string {
+	var textContent string
+	for _, msg := range i.Output {
+		for _, part := range msg.Parts {
+			if textPart, ok := part.(TextContent); ok {
+				textContent += textPart.Text
+			}
+		}
+	}
+	return textContent
+}
+
 // ContentChoice is one of the response choices returned by GenerateContent
 // calls.
 type ContentChoice struct {
