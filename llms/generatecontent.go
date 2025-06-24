@@ -135,6 +135,8 @@ type ContentResponse struct {
 	// Deprecated
 	Choices []*ContentChoice
 
+	// 在一个回合中，不管助手发了多少part，都应视为一条消息。只有chat老接口和谷歌那种多个choices视为多个消息
+	// 否则涉及多个插件调用时会出错
 	Output []MessageContent
 
 	// StopReason is the reason the model stopped generating output.
