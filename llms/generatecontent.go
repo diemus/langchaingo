@@ -135,7 +135,7 @@ type ContentResponse struct {
 	// Deprecated
 	Choices []*ContentChoice
 
-	Output []*MessageContent
+	Output []MessageContent
 
 	// StopReason is the reason the model stopped generating output.
 	StopReason string
