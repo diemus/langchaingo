@@ -132,7 +132,16 @@ func (ToolCallResponse) isPart() {}
 // ContentResponse is the response returned by a GenerateContent call.
 // It can potentially return multiple content choices.
 type ContentResponse struct {
+	// Deprecated
 	Choices []*ContentChoice
+
+	Output []*MessageContent
+
+	// StopReason is the reason the model stopped generating output.
+	StopReason string
+
+	// GenerationInfo is arbitrary information the model adds to the response.
+	GenerationInfo map[string]any
 }
 
 // ContentChoice is one of the response choices returned by GenerateContent
