@@ -132,7 +132,30 @@ func (ToolCallResponse) isPart() {}
 // ContentResponse is the response returned by a GenerateContent call.
 // It can potentially return multiple content choices.
 type ContentResponse struct {
+	// Deprecated
 	Choices []*ContentChoice
+
+	// 在一个回合中，不管助手发了多少part，都应视为一条消息。只有chat老接口和谷歌那种多个choices视为多个消息
+	// 否则涉及多个插件调用时会出错
+	Output []MessageContent
+
+	// StopReason is the reason the model stopped generating output.
+	StopReason string
+
+	// GenerationInfo is arbitrary information the model adds to the response.
+	GenerationInfo map[string]any
+}
+
+func (i ContentResponse) GetTextContent() string {
+	var textContent string
+	for _, msg := range i.Output {
+		for _, part := range msg.Parts {
+			if textPart, ok := part.(TextContent); ok {
+				textContent += textPart.Text
+			}
+		}
+	}
+	return textContent
 }
 
 // ContentChoice is one of the response choices returned by GenerateContent
