@@ -111,6 +111,7 @@ const (
 	// FunctionCallBehaviorAuto will call functions automatically.
 	FunctionCallBehaviorAuto FunctionCallBehavior = "auto"
 
+	ReasoningEffortNone    ReasoningEffort = "none"
 	ReasoningEffortMinimal ReasoningEffort = "minimal"
 	ReasoningEffortLow     ReasoningEffort = "low"
 	ReasoningEffortMedium  ReasoningEffort = "medium"
